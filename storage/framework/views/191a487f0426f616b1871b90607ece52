@@ -1,0 +1,124 @@
+<?php $__env->startSection('content'); ?>
+
+  <title>  <?php echo e($title = \App\Http\Controllers\SupportController::TITLE_UP); ?></title>
+	<link href="<?php echo e(asset('assets/css/support.css')); ?>" rel="stylesheet">
+	  <script src="<?php echo e(asset('assets/js/chat.js')); ?>" ></script>
+	<script type="text/javascript">
+    $(document).ready(function() {
+		$(".newticket").click(function () {
+			$(".support .table").hide();
+			$(".support .nticket").show();
+		});
+		
+		$(".listticket").click(function () {
+			$(".support .table").show();
+			$(".support .nticket").hide();
+		});
+		
+	});
+</script>
+<div class="content">
+	<?php if($u->ban_ticket != 1): ?>
+		
+		<div class="title-block">
+            <h2 style="color: #ffffff;">
+               <?php echo e($support_title = \App\Http\Controllers\SupportController::SUPPORT_TITLE); ?>
+
+            </h2>
+        </div>
+	<?php $__empty_1 = true; foreach($loots as $ticket): $__empty_1 = false; ?>
+
+	<?php if($ticket->username == $u->username || $u->is_admin == 1 || $u->is_moderator == 1): ?>
+	
+
+	<div class="support">
+		<?php if($ticket->status == 0): ?><div class="oticket">Данный тикет открыт, если мы вам помогли, то закройте его.</div>
+		<?php else: ?> <div class="fticket">Данный тикет закрыт!</div> <?php endif; ?>
+		
+		<div class="sticket">
+			<div class="suticket">
+				<div class="avatar"><img src="<?php echo e($ticket->avatarka); ?>" alt="" title="" /></div>	
+				<div class="tfe">
+					<div class="time_user"><?php echo e($ticket->date); ?></div>
+					<div class="title"><?php echo e($ticket->username); ?></div>
+					<div class="msg"><?php echo e($ticket->messages); ?></div>
+				</div>
+				
+			</div>
+			<?php if($ticket->ask == 1 || $ticket->ask == 2): ?>			
+				<?php $__empty_2 = true; foreach($mess as $ticketm): $__empty_2 = false; ?>
+					<?php if($ticketm->admin_id == 1): ?>
+					<div class="suticket_admin">
+						<div class="avatar"><img src="/assets/img/adm-ava.png" alt=" "="" title=""></div>	
+						<div class="tfe">
+							<div class="time"><?php echo e($ticketm->date); ?></div>
+							<div class="title_admin"><?php echo e($support_name = \App\Http\Controllers\SupportController::SUPPORT_NAME); ?></div>
+							<div class="msg"><?php echo e($ticketm->messages); ?></div>
+						</div>
+					</div>
+					<?php else: ?>
+					<div class="suticket">
+						<div class="avatar_user"><img src="<?php echo e($ticket->avatarka); ?>" alt="" title="" /></div>	
+						<div class="tfe">
+							<div class="time_user"><?php echo e($ticketm->date); ?></div>
+							<div class="title"><?php echo e($ticket->username); ?></div>
+							<div class="msg"><?php echo e($ticketm->messages); ?></div>
+						</div>
+					</div>
+					<?php endif; ?>
+				<?php endforeach; if ($__empty_2): ?>
+				<?php endif; ?>
+			<?php endif; ?>
+			<div class="newtif">
+				
+				<?php if($ticket->ask == 1 && $ticket->status == 0): ?> 
+				<span class="oticket">Ваша заявка ожидает ответа от технической поддержки. Пожалуйста, не дублируйте письма повторно мы ответим вам в течение 24 часов.</span> 
+				
+				<form action="/support/<?php echo e($ticket->id); ?>" method="POST"> 
+					<textarea type="text" name="mess" placeholder="Введите ваше сообщение..." maxlength="64" autocomplete="off"></textarea> 
+					<input type="submit" name="submit" value="Отправить"> 
+					<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>"/>
+				</form>
+				<?php endif; ?>
+				<?php if($ticket->ask == 2 && $ticket->status == 0): ?> 
+				<span class="oticket">Техническая поддержка ответила на ваш запрос, ознакомьтесь с ним и в случае, если мы вам помогли, закройте тикет.</span> 
+				
+				<form action="/support/<?php echo e($ticket->id); ?>" method="POST"> 
+					<textarea type="text" name="mess" placeholder="Введите ваше сообщение..." maxlength="64" autocomplete="off"></textarea>
+					<input type="submit" name="submit" value="Отправить"> 
+					<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>"/>
+				</form> 
+				<?php endif; ?>
+				<?php if($ticket->ask == 2 && $ticket->status == 1 || $ticket->ask == 1 && $ticket->status == 1): ?> 
+				<span class="fticket2">Спасибо за обращение в техническую поддержку CSGOALLIN.RU, мы были рады Вам помочь!</span>
+				
+				<br> 
+				<?php endif; ?>
+				<?php if($ticket->status == 0): ?> 
+				<form action="/support/<?php echo e($ticket->id); ?>" method="POST"> 
+					<br><br><input type="submit" name="close" value="Закрыть тикет">
+					<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>"/>
+				</form>
+				<?php endif; ?>
+				<?php if($u->is_admin == 1 && $ticket->status == 0): ?> 
+				<form action="/support/<?php echo e($ticket->id); ?>" method="POST"> 
+					<br><br><input type="submit" name="ban" value="Заблокировать">
+					<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>"/>
+				</form>
+				<?php endif; ?>
+			</div>	
+		</div>
+	</div>
+	<?php else: ?>
+	<center><h1 style="color: #fff;">Такого запроса не существует!</h1></center>
+	<?php endif; ?>
+	<?php endforeach; if ($__empty_1): ?>
+	<center><h1 style="color: #fff;">Такого запроса не существует!</h1></center>
+	<?php endif; ?>	
+	<?php else: ?>	
+	<div class="other-title">Ошибка! Вы были заблокированы за флуд.</div>	
+	<?php endif; ?>		
+</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

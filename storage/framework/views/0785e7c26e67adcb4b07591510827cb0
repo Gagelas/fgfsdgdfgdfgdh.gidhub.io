@@ -1,0 +1,81 @@
+
+
+<?php $__env->startSection('content'); ?>
+<div class="ref-page">
+        <div class="title-block">
+            <h2>Реферальная система</h2>
+        </div>
+
+<div class="page-content">
+<div class="about">
+<div class="page-main-block">
+		<div class="page-block">
+			<div class="ref_balance">
+			<b style="font-weight:normal;font-size:17px;">Ваш Реферальный Код</b><br>
+			<span id="balance_id"><?php echo e($u->steamid64); ?></span>
+			</div>
+	</div>
+</div>
+
+<div style="overflow: hidden;margin-left: 187px;">
+			<div class="page-main-block left" style="float: left; width: 360px;">
+		<div class="page-block">
+			<div class="ref_balance">
+			<b style="font-weight:normal;font-size:17px;">Ваш Баланс</b><br>
+			<span id="balance_id"><?php echo e($u->money); ?></span> Рублей
+			</div>
+		</div>
+	</div>
+	<form action="/getcoupon" method="GET" style="margin-left: 15px;float: left;">
+<div class="form">
+  <input  textarea name="idd" cols="17" placeholder="КУПОН" autocomplete="off" style=" width: 200px;"></textarea>
+
+<input type="hidden" name="refid" id="desc" value=<?php echo e($u->steamid64); ?>>
+<input type="submit" id="submit" class="btn-add-balance" value="Активировать">
+	
+   </div></form> 
+</div>
+
+<div class="about" style="margin-top: 50px;">
+<div class="other-title" style="text-align: center; background: linear-gradient(to top, #33885f, #88bc74);text-align: center;padding: 15px;font-size: 16px;text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);color: #fff;">СТАТИСТИКА</div>
+<div class="page-main-block left" style="float: left;  margin-left: 186px; margin-top: 20px;">
+		<div class="page-block">
+			<div class="ref_balance">
+			<b style="float: left;">Ваша прибыль</b><br>
+			<span id="balance_id"><?php echo e($u->refprofit); ?></span> Рублей
+			</div>
+		</div>
+	</div>
+	
+		<div class="page-main-block left" style="float: left;  margin-left: 30px; margin-top: 20px;">
+		<div class="page-block">
+			<div class="ref_balance">
+			<b style="float: left;">Количество людей приглашенных вами</b><br>
+			<span id="balance_id"><?php echo e($u->refcount); ?></span> 
+			</div>
+		</div>
+	</div>	
+</div>
+
+<div class="about" style="margin-top: 157px;
+">
+<div class="other-title" style="text-align: center; background: linear-gradient(to top, #33885f, #88bc74);text-align: center;padding: 15px;font-size: 16px;text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);color: #fff;">ИНФОРМАЦИЯ</div>
+<ol>
+	<li>- После активации кода вы получаете 10 руб. на свой счет вы можете потратить их в магазине или поиграть с ними на сайте.</li>
+	<li>- Регистрация кода возможна только один раз!</li>
+</ol>
+<ol>
+	<b>Чтобы получить своего реферала:</b>
+	<li>- Попросите своего друга \ знакомого активировать Ваш личный код у себя в реферальной системе.</li>
+	<li>- За каждого приглашенного друга \ знакомого вы получаете 20 руб, а друг 10 руб.</li>
+</ol>
+
+</div>
+
+    </div>
+    </div>
+
+
+
+	<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

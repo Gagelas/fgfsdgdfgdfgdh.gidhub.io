@@ -1,0 +1,93 @@
+
+
+<?php $__env->startSection('content'); ?>
+ <title>  <?php echo e($title = \App\Http\Controllers\SupportController::TITLE_UP); ?></title>
+	<link href="<?php echo e(asset('assets/css/support.css')); ?>" rel="stylesheet">
+	  <script src="<?php echo e(asset('assets/js/chat.js')); ?>" ></script>
+	<script type="text/javascript">
+    $(document).ready(function() {
+		$(".newticket").click(function () {
+			$(".support .table").hide();
+			$(".support .nticket").show();
+		});
+		
+		$(".listticket").click(function () {
+			$(".support .table").show();
+			$(".support .nticket").hide();
+		});
+		
+		
+	});
+	</script>	
+<div class="content">
+
+
+	<!-- <middle> -->
+	<?php if($u->ban_ticket != 1): ?>
+	<div class="title-block">
+            <h2 style="color: #ffffff;">
+                  <?php echo e($support_title = \App\Http\Controllers\SupportController::SUPPORT_TITLE); ?>
+
+            </h2>
+		
+        </div>
+
+	<div class="support">
+	
+	
+		<div class="newticket">
+		
+		<span class="ntitle">Создать новый запрос</span>
+		<span class="nabout">Написать новое сообщение в техническую поддержку</span>
+		
+		</div>
+		<div class="listticket"><span class="ntitle">Список тикетов</span><span class="nabout">Здесь вы сможете лицезреть список всех ваших обращений</span></div>
+
+
+		<div class="table">
+			<div class="list">
+				<div class="tb0">ID</div>
+				<div class="tb1">Аватарка</div>
+				<div class="tb2">Пользователь</div>
+				<div class="tb8">  Тема</div>
+				<div class="tb3">Статус</div>
+			</div>
+			<?php $__empty_1 = true; foreach($tickets as $ticket): $__empty_1 = false; ?>
+			<div class="list">
+				<div class="tb0"><a href="/support/<?php echo e($ticket->id); ?>">#<?php echo e($ticket->id); ?></a></div>
+				<div class="tb1"><a href="/support/<?php echo e($ticket->id); ?>"><img style="width:30%; border-radius: 20%;" src="<?php echo e($ticket->avatarka); ?>" alt="" title="" /></a></div>
+				<div class="tb10"><a href="/support/<?php echo e($ticket->id); ?>"><?php echo e($ticket->username); ?></a></div>
+				<div class="tb9"><?php echo e($ticket->title); ?></div>
+				<div class="tbStatus">
+				<?php if($ticket->status == 0): ?> Открытый 
+				
+				<?php else: ?>
+<div class="tbStatusZokrit">	
+				Закрытый
+			
+				</div>
+					<?php endif; ?>
+				</div>
+				
+			</div>
+			<?php endforeach; if ($__empty_1): ?>
+			<br><center><h1 style="color: #FFF; font-weight: 300;">Запросы в техническую поддержку отсутствуют!</h1></center>
+			<?php endif; ?>
+		</div>
+		<form action="/support" method="POST">
+			<div class="nticket" style="display: none;">
+				<input type="text" name="title" value="" placeholder="Тема обращения" maxlength="32" autocomplete="off">
+				<textarea type="text" name="mess" value="" placeholder="Опишите вашу проблему" maxlength="128" autocomplete="off"></textarea>
+				<input type="submit" name="submit" value="Создать заявку">
+			</div>
+			<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>"/>
+		</form>
+	</div>
+	<?php else: ?>	
+	<div class="other-title">Ошибка! Вы были заблокированы за флуд.</div>		
+	<?php endif; ?>
+
+</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
